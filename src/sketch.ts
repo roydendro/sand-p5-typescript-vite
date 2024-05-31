@@ -2,8 +2,8 @@ import type p5 from "p5";
 
 // Constants.
 export const BACKGROUND_COLOR = "black";
-export const RESOLUTION = 120;
-export const SPAWN_RADIUS = 6;
+export const RESOLUTION = 240;
+export const SPAWN_RADIUS = 7;
 
 // Variables
 let grid: number[][];
@@ -121,7 +121,7 @@ const mouseDown = (p: p5) => {
                 cellExists(grid, newX, newY) &&
                 grid[newX][newY] === 0
             ) {
-                grid[newX][newY] = p.random([1, 0, 0]) ? color : 0;
+                grid[newX][newY] = p.random([1, 0, 0, 0]) ? color : 0;
             }
         }
 
