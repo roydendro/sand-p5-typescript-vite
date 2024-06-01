@@ -168,13 +168,13 @@ const mouseDown = (p: p5): void => {
                 (x - clickedX) ** 2 + (y - clickedY) ** 2,
             );
 
-            //If the distance is smaller than the radius, set the cell to the color. If it doenst have one already.
+            // If the distance is smaller than the radius, set the cell to the color. If it doenst have one already.
             if (distance <= SPAWN_RADIUS && grid[x][y] === 0) {
                 grid[x][y] = p.random([1, 0, 0, 0, 0]) ? color : 0;
             }
         }
 
-        //Shift the color but stay within the red-yellow range
+        // Shift the color but stay within the red-yellow range
         color = (color + 0.04) % 66;
     }
 };
