@@ -22,15 +22,13 @@ export default function sketch(p: p5) {
         p.colorMode("hsl");
         p.noStroke();
 
-        cellSize = Math.floor(
-            Math.min(p.width / RESOLUTION, p.height / RESOLUTION),
-        );
+        setupGrid(p);
+    };
 
-        gridWidth = Math.floor(p.width / cellSize);
-        gridHeight = Math.floor(p.height / cellSize);
+    p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
 
-        // Create empty grid.
-        grid = createGrid(gridWidth, gridHeight);
+        setupGrid(p);
     };
 
     p.draw = () => {
@@ -94,7 +92,18 @@ export default function sketch(p: p5) {
     p.mouseDragged = () => mouseDown(p);
 }
 
-const createGrid = (width: number, height: number) => {
+const setupGrid = (p: p5): void => {
+    // Calculate grid properties based on windowsize and RESOLUTION
+    cellSize = Math.floor(
+        Math.min(p.width / RESOLUTION, p.height / RESOLUTION),
+    );
+    gridWidth = Math.floor(p.width / cellSize);
+    gridHeight = Math.floor(p.height / cellSize);
+
+    // Create empty grid.
+    grid = createGrid(gridWidth, gridHeight);
+};
+const createGrid = (width: number, height: number): number[][] => {
     const newGrid: number[][] = [];
     for (let i = 0; i < width; i++) {
         newGrid[i] = new Array(height).fill(0);
