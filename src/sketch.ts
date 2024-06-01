@@ -1,6 +1,6 @@
 import type p5 from "p5";
 
-// Constants.
+// Constants
 export const BACKGROUND_COLOR = "black";
 export const RESOLUTION = 240;
 export const SPAWN_RADIUS = 7;
@@ -19,6 +19,7 @@ let cellSize: number;
 export default function sketch(p: p5) {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
+
         p.colorMode("hsl");
         p.noStroke();
 
@@ -88,10 +89,18 @@ export default function sketch(p: p5) {
         }
         grid = nextGrid;
     };
+
     p.mouseClicked = () => mouseDown(p);
     p.mouseDragged = () => mouseDown(p);
 }
 
+/**
+ * Sets up the grid properties based on window size and resolution.
+ *
+ * @param p - The p5 instance.
+ *
+ * @returns {void}
+ */
 const setupGrid = (p: p5): void => {
     // Calculate grid properties based on windowsize and RESOLUTION
     cellSize = Math.floor(
@@ -103,6 +112,15 @@ const setupGrid = (p: p5): void => {
     // Create empty grid.
     grid = createGrid(gridWidth, gridHeight);
 };
+
+/**
+ * Creates a 2D grid of specified width and height, filled with zeros.
+ *
+ * @param width - The width of the grid.
+ * @param height - The height of the grid.
+ *
+ * @returns {number[][]} - A 2D grid of specified width and height, filled with zeros.
+ */
 const createGrid = (width: number, height: number): number[][] => {
     const newGrid: number[][] = [];
     for (let i = 0; i < width; i++) {
@@ -111,10 +129,28 @@ const createGrid = (width: number, height: number): number[][] => {
     return newGrid;
 };
 
-const cellExists = (grid: number[][], x: number, y: number) => {
+/**
+ * Checks if a cell exists within the grid.
+ *
+ * @param grid - The 2D grid to check.
+ * @param x - The x-coordinate of the cell.
+ * @param y - The y-coordinate of the cell.
+ *
+ * @returns {boolean} - True if the cell exists within the grid, false otherwise.
+ */
+const cellExists = (grid: number[][], x: number, y: number): boolean => {
     return x >= 0 && x < grid.length && y >= 0 && y < grid[x].length;
 };
 
+/**
+ * Handles mouse down and drag events.
+ * Places cells in the grid based on the mouse position and the defined spawn radius.
+ * Shifts the color of the cells within the red-yellow range.
+ *
+ * @param p - The p5 instance.
+ *
+ * @returns {void}
+ */
 const mouseDown = (p: p5): void => {
     // Find out what cell the mouse has clicked/dragged on.
     const clickedX = Math.floor(p.mouseX / cellSize);
