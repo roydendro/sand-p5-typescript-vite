@@ -106,22 +106,26 @@ const cellExists = (grid: number[][], x: number, y: number) => {
     return x >= 0 && x < grid.length && y >= 0 && y < grid[x].length;
 };
 
-const mouseDown = (p: p5) => {
-    // Find out what cell the mouse has clicked on.
-    const x = Math.floor(p.mouseX / cellSize);
-    const y = Math.floor(p.mouseY / cellSize);
+const mouseDown = (p: p5): void => {
+    // Find out what cell the mouse has clicked/dragged on.
+    const clickedX = Math.floor(p.mouseX / cellSize);
+    const clickedY = Math.floor(p.mouseY / cellSize);
 
     for (let i = -SPAWN_RADIUS; i <= SPAWN_RADIUS; i++) {
         for (let j = -SPAWN_RADIUS; j <= SPAWN_RADIUS; j++) {
-            const newX = x + i;
-            const newY = y + j;
-            if (
-                // Sort of create a circle/diamond shape around the clicked grid item
-                Math.abs(i) + Math.abs(j) <= SPAWN_RADIUS * 1.5 &&
-                cellExists(grid, newX, newY) &&
-                grid[newX][newY] === 0
-            ) {
-                grid[newX][newY] = p.random([1, 0, 0, 0]) ? color : 0;
+            // Make sure the cell is within the bounds of the grid.
+            const x = Math.min(gridWidth - 1, Math.max(0, clickedX + i));
+            const y = Math.min(gridHeight - 1, Math.max(0, clickedY + j));
+
+            // Calculate the distance between the point clicked and the cell
+            // Eucledian distance calculation
+            const distance = Math.sqrt(
+                (x - clickedX) ** 2 + (y - clickedY) ** 2,
+            );
+
+            //If the distance is smaller than the radius, set the cell to the color. If it doenst have one already.
+            if (distance <= SPAWN_RADIUS && grid[x][y] === 0) {
+                grid[x][y] = p.random([1, 0, 0, 0, 0]) ? color : 0;
             }
         }
 
